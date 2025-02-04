@@ -258,6 +258,7 @@
 							<goal>integration-test</goal>
 						</goals>
 						<configuration>
+							<testFailureIgnore>false</testFailureIgnore>
 							<includes>
 								<include>**/*IT.java</include>
 							</includes>
