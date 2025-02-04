@@ -24,7 +24,7 @@ jobs:
 
       - name: Running tests
         run: |
-          mvn --batch-mode test
+          mvn --batch-mode verify
           echo "Maven exit code: $?"
         env:
           MATLAB_ROOT: ${{ steps.setup-matlab.outputs.matlabroot }}
