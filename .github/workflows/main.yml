@@ -24,7 +24,6 @@ jobs:
 
       - name: Running tests
         run: |
-          set -e
           mvn --batch-mode test
           echo "Maven exit code: $?"
         env:
