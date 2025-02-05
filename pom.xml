@@ -256,6 +256,7 @@
 						<id>integration-tests</id>
 						<goals>
 							<goal>integration-test</goal>
+							<goal>verify</goal>
 						</goals>
 						<configuration>
 							<testFailureIgnore>false</testFailureIgnore>
