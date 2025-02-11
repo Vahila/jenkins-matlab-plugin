@@ -1,29 +1,26 @@
 name: using mpm to install MATLAB
 on: push
 jobs:
-  run-tests-job:
-    strategy:
-      matrix:
-        os: [windows-latest]
+  my-job:
     name: Run System tests
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java 11
-        uses: actions/setup-java@v4
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-          cache: maven
+        uses: actions/checkout@v2
 
       - name: Setup MATLAB
         id: setup-matlab
         uses: matlab-actions/setup-matlab@v2
 
+      - name: Setup R2023b MATLAB
+        id: setup-matlab-23b
+        uses: matlab-actions/setup-matlab@v2
+        with:
+          release: R2023b
+
       - name: Running tests
-        run: mvn --batch-mode verify
+        run: mvn test-compile failsafe:integration-test
         env:
           MATLAB_ROOT: ${{ steps.setup-matlab.outputs.matlabroot }}
+          MATLAB_ROOT_22b: ${{ steps.setup-matlab-23b.outputs.matlabroot }}
           MLM_LICENSE_TOKEN:  ${{ secrets.MLM_LICENSE_TOKEN}}
