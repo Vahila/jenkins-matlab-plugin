@@ -1,3 +1,6 @@
+# 🚀 Announcement: New Features Coming Soon!
+We are excited to announce that new features will be released on [date]. Stay tuned for updates!
+
 # Continuous Integration with MATLAB on Jenkins
 This plugin enables you to build and test your MATLAB&reg; project as part of your Jenkins&trade; build. For example, you can automatically identify any code issues in your project, run tests and generate test and coverage artifacts, and package your files into a toolbox.
 
