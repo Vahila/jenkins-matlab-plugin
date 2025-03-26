@@ -1,5 +1,7 @@
-#  ANNOUNCEMENT: Repository is archived
-## This repository has been archived and is no longer maintained. To access the latest plugin features or to report any issues, please visit the jenkinsci/matlab-plugin repository.
+# Archived Repository Notice
+
+> **⚠️ Announcement:**  
+> This repository has been archived and is no longer maintained. To access the latest plugin features or to report any issues, please visit the [jenkinsci/matlab-plugin](https://github.com/jenkinsci/matlab-plugin) repository.
 
 # Continuous Integration with MATLAB on Jenkins
 
