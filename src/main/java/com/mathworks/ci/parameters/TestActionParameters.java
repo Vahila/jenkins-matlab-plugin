@@ -1,5 +1,9 @@
 package com.mathworks.ci.parameters;
 
+/**
+ * Copyright 2024 The MathWorks, Inc.
+ */
+
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -9,11 +13,6 @@ import hudson.Launcher;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
-
-/**
- * Copyright 2024 The MathWorks, Inc.
- *
- */
 
 public class TestActionParameters extends MatlabActionParameters {
     private String testResultsPDF;
@@ -30,7 +29,7 @@ public class TestActionParameters extends MatlabActionParameters {
     private List<String> sourceFolder = new ArrayList<>();
     private List<String> selectByFolder = new ArrayList<>();
 
-    public TestActionParameters(StepContext context, String startupOpts, 
+    public TestActionParameters(StepContext context, String startupOpts,
             String testResultsPDF, String testResultsTAP, String testResultsJUnit,
             String codeCoverageCobertura, String testResultsSimulinkTest, String modelCoverageCobertura,
             String selectByTag, String loggingLevel, String outputDetail,
@@ -53,7 +52,8 @@ public class TestActionParameters extends MatlabActionParameters {
         this.selectByFolder = selectByFolder;
     }
 
-    public TestActionParameters(Run<?, ?> build, FilePath workspace, EnvVars env, Launcher launcher, TaskListener listener, String startupOpts, 
+    public TestActionParameters(Run<?, ?> build, FilePath workspace, EnvVars env, Launcher launcher,
+            TaskListener listener, String startupOpts,
             String testResultsPDF, String testResultsTAP, String testResultsJUnit,
             String codeCoverageCobertura, String testResultsSimulinkTest, String modelCoverageCobertura,
             String selectByTag, String loggingLevel, String outputDetail,

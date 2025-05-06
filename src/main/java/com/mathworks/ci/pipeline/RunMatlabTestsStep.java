@@ -1,14 +1,11 @@
 package com.mathworks.ci.pipeline;
+
 /**
  * Copyright 2020-2024 The MathWorks, Inc.
- *  
  */
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
@@ -26,12 +23,11 @@ import hudson.model.TaskListener;
 import hudson.Util;
 
 import com.mathworks.ci.Message;
-import com.mathworks.ci.parameters.TestActionParameters;
 
 public class RunMatlabTestsStep extends Step implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String testResultsPDF;
     private String testResultsTAP;
     private String testResultsJUnit;
@@ -50,9 +46,9 @@ public class RunMatlabTestsStep extends Step implements Serializable {
 
     @DataBoundConstructor
     public RunMatlabTestsStep() {
-        
+
     }
-    
+
     public String getTestResultsTAP() {
         return testResultsTAP;
     }
@@ -61,7 +57,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     public void setTestResultsTAP(String testResultsTAP) {
         this.testResultsTAP = testResultsTAP;
     }
-    
+
     public String getTestResultsPDF() {
         return testResultsPDF;
     }
@@ -101,7 +97,6 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     public String getModelCoverageCobertura() {
         return modelCoverageCobertura;
     }
-    
 
     @DataBoundSetter
     public void setModelCoverageCobertura(String modelCoverageCobertura) {
@@ -116,29 +111,29 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     public void setSourceFolder(List<String> sourceFolder) {
         this.sourceFolder = sourceFolder;
     }
-    
+
     public String getSelectByTag() {
         return this.selectByTag;
     }
-    
+
     @DataBoundSetter
     public void setSelectByTag(String selectByTag) {
         this.selectByTag = selectByTag;
     }
-    
+
     public List<String> getSelectByFolder() {
         return this.selectByFolder;
     }
-    
+
     @DataBoundSetter
     public void setSelectByFolder(List<String> selectByFolder) {
         this.selectByFolder = selectByFolder;
     }
-    
+
     public String getLoggingLevel() {
         return loggingLevel;
     }
-    
+
     @DataBoundSetter
     public void setLoggingLevel(String loggingLevel) {
         this.loggingLevel = loggingLevel;
@@ -147,7 +142,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     public String getOutputDetail() {
         return outputDetail;
     }
-    
+
     @DataBoundSetter
     public void setOutputDetail(String outputDetail) {
         this.outputDetail = outputDetail;
@@ -156,7 +151,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     public boolean getUseParallel() {
         return useParallel;
     }
-    
+
     @DataBoundSetter
     public void setUseParallel(boolean useParallel) {
         this.useParallel = useParallel;
@@ -165,7 +160,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     public boolean getStrict() {
         return strict;
     }
-    
+
     @DataBoundSetter
     public void setStrict(boolean strict) {
         this.strict = strict;
@@ -174,7 +169,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     public String getStartupOptions() {
         return Util.fixNull(startupOptions);
     }
-    
+
     @DataBoundSetter
     public void setStartupOptions(String startupOptions) {
         this.startupOptions = startupOptions;
@@ -198,7 +193,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
         public String getFunctionName() {
             return Message.getValue("matlab.tests.build.step.name");
         }
-        
+
         @Override
         public String getDisplayName() {
             return Message.getValue("matlab.tests.step.display.name");

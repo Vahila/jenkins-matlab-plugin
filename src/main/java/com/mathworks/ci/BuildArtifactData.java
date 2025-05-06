@@ -1,5 +1,9 @@
 package com.mathworks.ci;
 
+/**
+ * Copyright 2024 The MathWorks, Inc.
+ */
+
 public class BuildArtifactData {
 
     private String taskName;
@@ -8,10 +12,10 @@ public class BuildArtifactData {
 
     private String taskDescription;
     private boolean taskSkipped;
+    private String skipReason;
 
     public BuildArtifactData() {
     }
-
 
     public String getTaskDuration() {
         return this.taskDuration;
@@ -35,6 +39,14 @@ public class BuildArtifactData {
 
     public void setTaskSkipped(boolean taskSkipped) {
         this.taskSkipped = taskSkipped;
+    }
+
+    public String getSkipReason() {
+        return (this.skipReason == null) ? "" : this.skipReason;
+    }
+
+    public void setSkipReason(String skipReason) {
+        this.skipReason = skipReason;
     }
 
     public boolean getTaskFailed() {

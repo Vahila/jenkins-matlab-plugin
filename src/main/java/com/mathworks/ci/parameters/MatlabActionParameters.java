@@ -1,18 +1,16 @@
 package com.mathworks.ci.parameters;
 
+/**
+ * Copyright 2024 The MathWorks, Inc.
+ */
+
 import java.io.IOException;
-import java.io.Serializable;
 import hudson.FilePath;
 import hudson.EnvVars;
 import hudson.Launcher;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
-
-/**
- * Copyright 2024 The MathWorks, Inc.
- *
- */
 
 public class MatlabActionParameters {
     private Run build;
@@ -32,7 +30,8 @@ public class MatlabActionParameters {
         this.startupOptions = startupOpts;
     }
 
-    public MatlabActionParameters(Run build, FilePath workspace, EnvVars env, Launcher launcher, TaskListener listener, String startupOpts) {
+    public MatlabActionParameters(Run build, FilePath workspace, EnvVars env, Launcher launcher, TaskListener listener,
+            String startupOpts) {
         this.build = build;
         this.workspace = workspace;
         this.env = env;

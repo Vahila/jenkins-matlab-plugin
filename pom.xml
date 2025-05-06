@@ -4,61 +4,74 @@
 	<parent>
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
-		<version>3.57</version>
+		<version>4.75</version>
 		<relativePath />
 	</parent>
+
 	<artifactId>matlab</artifactId>
-	<version>2.13.2-SNAPSHOT</version>
+	<version>${changelist}</version>
 	<packaging>hpi</packaging>
+
+	<name>MATLAB Plugin</name>
+	<url>https://github.com/jenkinsci/matlab-plugin</url>
+	<description>Jenkins plugin for MATLAB</description>
+
 	<developers>
 		<developer>
 			<id>mathworks_ci_team</id>
 			<name>MathWorks</name>
-			<email>nbhoski@mathworks.com</email>
+			<email>continuous-integration@mathworks.com</email>
 		</developer>
 	</developers>
-	<properties>
-		<jenkins.version>2.164.3</jenkins.version>
-		<java.level>8</java.level>
-	</properties>
-	<name>MATLAB Plugin</name>
-	<description>Jenkins plugin for MATLAB</description>
-	<url>https://github.com/jenkinsci/matlab-plugin</url>
+
 	<licenses>
 		<license>
 			<name>MIT License</name>
 			<url>https://opensource.org/licenses/MIT</url>
 		</license>
 	</licenses>
+
 	<repositories>
 		<repository>
 			<id>repo.jenkins-ci.org</id>
 			<url>https://repo.jenkins-ci.org/public/</url>
 		</repository>
 	</repositories>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>repo.jenkins-ci.org</id>
 			<url>https://repo.jenkins-ci.org/public/</url>
 		</pluginRepository>
 	</pluginRepositories>
+
 	<scm>
-		<connection>scm:git:ssh://github.com/jenkinsci/matlab-plugin.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/jenkinsci/matlab-plugin.git</developerConnection>
-		<url>http://github.com/jenkinsci/matlab-plugin</url>
-		<tag>HEAD</tag>
+		<connection>scm:git:ssh://github.com/${gitHubRepo}.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/${gitHubRepo}.git</developerConnection>
+		<url>https://github.com/${gitHubRepo}</url>
+		<tag>${scmTag}</tag>
 	</scm>
+
+	<properties>
+		<changelist>999999-SNAPSHOT</changelist>
+		<gitHubRepo>jenkinsci/matlab-plugin</gitHubRepo>
+		<!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
+		<jenkins.baseline>2.387</jenkins.baseline>
+		<jenkins.version>${jenkins.baseline}.3</jenkins.version>
+	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>io.jenkins.tools.bom</groupId>
-				<artifactId>bom-2.164.x</artifactId>
-				<version>4</version>
-				<scope>import</scope>
+				<artifactId>bom-${jenkins.baseline}.x</artifactId>
+				<version>2543.vfb_1a_5fb_9496d</version>
 				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 	<dependencies>
 		<!-- JSON Parser -->
 		<dependency>
@@ -100,18 +113,26 @@
 			<artifactId>workflow-job</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <!-- Mockito -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>3.1.0</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>3.1.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+			<version>11.0.24</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
-			<!-- Plugin to download the matlab run scripts and keep it under class 
-				resource folder -->
+			<plugin>
+				<groupId>org.jenkins-ci.tools</groupId>
+				<artifactId>maven-hpi-plugin</artifactId>
+			</plugin>
+			<!-- Plugin to download the matlab run scripts and keep it under class resource folder -->
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
@@ -124,7 +145,8 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/v1/glnxa64/run-matlab-command</url>
+							<url>
+								https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/v2/glnxa64/run-matlab-command</url>
 							<unpack>false</unpack>
 							<outputDirectory>${basedir}/src/main/resources/glnxa64</outputDirectory>
 							<skipCache>true</skipCache>
@@ -132,15 +154,31 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>get-matlab-runner-mac</id>
+						<id>get-matlab-runner-maci</id>
 						<phase>validate</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/v1/maci64/run-matlab-command</url>
+							<url>
+								https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/v2/maci64/run-matlab-command</url>
 							<unpack>false</unpack>
 							<outputDirectory>${basedir}/src/main/resources/maci64</outputDirectory>
+							<skipCache>true</skipCache>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+					<execution>
+						<id>get-matlab-runner-maca</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>
+								https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/v2/maca64/run-matlab-command</url>
+							<unpack>false</unpack>
+							<outputDirectory>${basedir}/src/main/resources/maca64</outputDirectory>
 							<skipCache>true</skipCache>
 							<overwrite>true</overwrite>
 						</configuration>
@@ -152,7 +190,8 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/v1/win64/run-matlab-command.exe</url>
+							<url>
+								https://ssd.mathworks.com/supportfiles/ci/run-matlab-command/v2/win64/run-matlab-command.exe</url>
 							<unpack>false</unpack>
 							<outputDirectory>${basedir}/src/main/resources/win64</outputDirectory>
 							<skipCache>true</skipCache>
@@ -166,7 +205,8 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>https://ssd.mathworks.com/supportfiles/ci/matlab-script-generator/v0/matlab-script-generator.zip</url>
+							<url>
+								https://ssd.mathworks.com/supportfiles/ci/matlab-script-generator/v0/matlab-script-generator.zip</url>
 							<unpack>false</unpack>
 							<outputDirectory>${basedir}/src/main/resources</outputDirectory>
 							<skipCache>true</skipCache>
@@ -178,8 +218,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+				<!-- This plugin's configuration is used to store Eclipse m2e settings only. It has
+				no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

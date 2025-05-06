@@ -1,5 +1,9 @@
 package com.mathworks.ci;
 
+/**
+ * Copyright 2021-2024 The MathWorks, Inc.
+ */
+
 import java.lang.Exception;
 
 public class MatlabExecutionException extends Exception {

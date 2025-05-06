@@ -1,10 +1,11 @@
 package com.mathworks.ci;
+
 /**
  * Copyright 2020-2024 The MathWorks, Inc.
  *
  * Test class for RunMatlabTestsBuilder Persistence
- *
  */
+
 import hudson.model.FreeStyleProject;
 import hudson.model.Item;
 import org.junit.*;
@@ -40,8 +41,8 @@ public class RunMatlabTestBuilderPersistenceTest {
     }
 
     /*
-    * Test to verify artifacts are correctly restored after Jenkins restarts.
-    * */
+     * Test to verify artifacts are correctly restored after Jenkins restarts.
+     */
 
     @Test
     public void verifyArtifactSpecPersistAfterRestart() {
@@ -52,9 +53,12 @@ public class RunMatlabTestBuilderPersistenceTest {
             RunMatlabTestsBuilder.TapArtifact tap = new RunMatlabTestsBuilder.TapArtifact(tapFilePath);
             RunMatlabTestsBuilder.PdfArtifact pdf = new RunMatlabTestsBuilder.PdfArtifact(pdfFilePath);
             RunMatlabTestsBuilder.JunitArtifact junit = new RunMatlabTestsBuilder.JunitArtifact(jUnitFilePath);
-            RunMatlabTestsBuilder.CoberturaArtifact cobertura = new RunMatlabTestsBuilder.CoberturaArtifact(coberturaFilePath);
-            RunMatlabTestsBuilder.ModelCovArtifact modelCov = new RunMatlabTestsBuilder.ModelCovArtifact(modelCovFilePath);
-            RunMatlabTestsBuilder.StmResultsArtifact stmResults = new RunMatlabTestsBuilder.StmResultsArtifact(stmFilePath);
+            RunMatlabTestsBuilder.CoberturaArtifact cobertura = new RunMatlabTestsBuilder.CoberturaArtifact(
+                    coberturaFilePath);
+            RunMatlabTestsBuilder.ModelCovArtifact modelCov = new RunMatlabTestsBuilder.ModelCovArtifact(
+                    modelCovFilePath);
+            RunMatlabTestsBuilder.StmResultsArtifact stmResults = new RunMatlabTestsBuilder.StmResultsArtifact(
+                    stmFilePath);
 
             testBuilder.setTapArtifact(tap);
             testBuilder.setPdfReportArtifact(pdf);
@@ -93,8 +97,9 @@ public class RunMatlabTestBuilderPersistenceTest {
     }
 
     /*
-    * Test to verify Source Folder specification is correctly restored after Jenkins restarts
-    * */
+     * Test to verify Source Folder specification is correctly restored after
+     * Jenkins restarts
+     */
 
     @Test
     public void verifySourceFolderSpecPersistence() {

@@ -1,5 +1,9 @@
 package com.mathworks.ci;
 
+/**
+ * Copyright 2024 The MathWorks, Inc.
+ */
+
 import com.google.common.base.Charsets;
 import hudson.console.ConsoleLogFilter;
 import hudson.console.LineTransformationOutputStream;
@@ -34,7 +38,7 @@ public class BuildConsoleAnnotator extends LineTransformationOutputStream {
             ByteArrayOutputStream targetNote = new ByteArrayOutputStream();
             new BuildTargetNote().encodeTo(targetNote);
             ByteArrayOutputStream outcomeNote = new ByteArrayOutputStream();
-            return new byte[][]{targetNote.toByteArray(), outcomeNote.toByteArray()};
+            return new byte[][] { targetNote.toByteArray(), outcomeNote.toByteArray() };
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -66,7 +70,7 @@ public class BuildConsoleAnnotator extends LineTransformationOutputStream {
         private static final long serialVersionUID = 1;
         private byte[][] buildNotes = createBuildNotes();
 
-        //Taking care of old MATLAB build actions.
+        // Taking care of old MATLAB build actions.
         private Object readResolve() {
             if (buildNotes == null) {
                 buildNotes = createBuildNotes();

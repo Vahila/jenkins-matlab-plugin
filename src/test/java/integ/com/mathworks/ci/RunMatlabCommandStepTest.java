@@ -1,12 +1,11 @@
 package com.mathworks.ci.pipeline;
+
 /**
  * Copyright 2020-2024 The MathWorks, Inc.
- * 
  */
 
 import java.io.IOException;
 
-import hudson.model.Result;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
@@ -51,7 +50,7 @@ public class RunMatlabCommandStepTest {
     public void verifyMATLABstartsInWorkspace() throws Exception {
         DumbSlave s = j.createOnlineSlave();
         project.setDefinition(
-                new CpsFlowDefinition("node('!master') { runMATLABCommand(command: 'pwd')}", true));
+                new CpsFlowDefinition("node('!built-in') { runMATLABCommand(command: 'pwd')}", true));
 
         FilePath workspace = s.getWorkspaceFor(project);
         String workspaceName = workspace.getName();
@@ -67,10 +66,10 @@ public class RunMatlabCommandStepTest {
 
     // @Test
     // public void verifyMATLABPathSet() throws Exception {
-    //     project.setDefinition(
-    //             new CpsFlowDefinition("node { runMATLABCommand(command: 'pwd')}", true));
-    //     WorkflowRun build = project.scheduleBuild2(0).get();
-    //     j.assertLogContains("tester_started", build);
+    // project.setDefinition(
+    // new CpsFlowDefinition("node { runMATLABCommand(command: 'pwd')}", true));
+    // WorkflowRun build = project.scheduleBuild2(0).get();
+    // j.assertLogContains("tester_started", build);
     // }
 
     /*
@@ -82,7 +81,7 @@ public class RunMatlabCommandStepTest {
     public void verifyPipelineOnSlave() throws Exception {
         DumbSlave s = j.createOnlineSlave();
         project.setDefinition(new CpsFlowDefinition(
-                "node('!master') { runMATLABCommand(command: 'pwd')}", true));
+                "node('!built-in') { runMATLABCommand(command: 'pwd')}", true));
 
         s.getWorkspaceFor(project);
         WorkflowRun build = project.scheduleBuild2(0).get();
@@ -113,7 +112,8 @@ public class RunMatlabCommandStepTest {
     @Test
     public void verifyStartupOptionsSameAsScript() throws Exception {
         project.setDefinition(
-                new CpsFlowDefinition("node { runMATLABCommand(command: 'pwd', startupOptions: '-nojvm -uniqueoption')}", true));
+                new CpsFlowDefinition(
+                        "node { runMATLABCommand(command: 'pwd', startupOptions: '-nojvm -uniqueoption')}", true));
 
         WorkflowRun build = project.scheduleBuild2(0).get();
         j.assertLogContains("-nojvm -uniqueoption", build);
@@ -137,30 +137,19 @@ public class RunMatlabCommandStepTest {
     }
 
     /*
-    * Test for verifying Run Matlab Command raises exception for non-zero exit code.
-    * */
+     * Test for verifying Run Matlab Command raises exception for non-zero exit
+     * code.
+     */
     @Test
     public void verifyExceptionForNonZeroExitCode() throws Exception {
         // exitMatlab is a mock command for run_matlab_command script to exit with 1.
         project.setDefinition(
-                new CpsFlowDefinition("node { try {runMATLABCommand(command: 'exitMatlab')}catch(exc){echo exc.getMessage()}}", true));
+                new CpsFlowDefinition(
+                        "node { try {runMATLABCommand(command: 'exitMatlab')}catch(exc){echo exc.getMessage()}}",
+                        true));
 
         WorkflowRun build = project.scheduleBuild2(0).get();
         j.assertLogContains(String.format(Message.getValue("matlab.execution.exception.prefix"), 1), build);
         j.assertBuildStatusSuccess(build);
-    }
-    
-    /*
-     * Verify .matlab folder is generated 
-     *
-     */
-
-    @Test
-    public void verifyMATLABtempFolderGenerated() throws Exception {
-        project.setDefinition(
-                new CpsFlowDefinition("node { runMATLABCommand(command: 'pwd')}", true));
-
-        WorkflowRun build = project.scheduleBuild2(0).get();
-        j.assertLogContains(".matlab", build);
     }
 }

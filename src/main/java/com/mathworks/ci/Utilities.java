@@ -4,18 +4,14 @@ package com.mathworks.ci;
  * Copyright 2020-2024 The MathWorks, Inc.
  *
  * Utility class for common methods.
- *
  */
 
 import hudson.EnvVars;
 import hudson.FilePath;
-import hudson.Launcher;
-import hudson.Util;
 import hudson.model.Computer;
 import hudson.model.Node;
 import hudson.model.TaskListener;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class Utilities {
 
-    public static String getCellArrayFromList(List<String> listOfStr){
+    public static String getCellArrayFromList(List<String> listOfStr) {
         // Ignore empty string values in the list
         Predicate<String> isEmpty = String::isEmpty;
         Predicate<String> isNotEmpty = isEmpty.negate();
@@ -40,24 +36,26 @@ public class Utilities {
         String name = env.get(Message.getValue("Axis.matlab.key"));
 
         // If no MATLAB axis is set or if 'Use MATLAB version' is selected, return
-        if (name == null || name.isEmpty() || env.get("matlabroot") != null){
+        if (name == null || name.isEmpty() || env.get("matlabroot") != null) {
             return;
         }
 
-        String matlabExecutablePath = getNodeSpecificHome(name,
-               cmp.getNode(), listener, env) + ((Boolean.TRUE.equals(cmp.isUnix()))?"/bin" : "\\bin");
-        env.put("PATH+matlabroot", matlabExecutablePath);
+        FilePath matlabRoot = getNodeSpecificHome(name, cmp.getNode(), listener, env);
+
+        FilePath matlabBin = new FilePath(matlabRoot, "bin");
+        env.put("PATH+matlabroot", matlabBin.getRemote());
 
         // Specify which MATLAB was added to path.
-        listener.getLogger().println("\n" + String.format(Message.getValue("matlab.added.to.path.from"), matlabExecutablePath) + "\n");
+        listener.getLogger().println(
+                "\n" + String.format(Message.getValue("matlab.added.to.path.from"), matlabBin.getRemote()) + "\n");
     }
 
-    public static String getNodeSpecificHome(String instName,Node node, TaskListener listener, EnvVars env)
+    public static FilePath getNodeSpecificHome(String instName, Node node, TaskListener listener, EnvVars env)
             throws IOException, InterruptedException {
         MatlabInstallation inst = MatlabInstallation.getInstallation(instName);
         if (inst == null || node == null) {
             // Following will error out in BuildWrapper
-            return "";
+            throw new MatlabNotFoundError("MATLAB installations could not be found");
         }
 
         // get installation for node and environment.
@@ -66,9 +64,10 @@ public class Utilities {
         FilePath matlabExecutablePath = node.createPath(inst.getHome());
         // If no MATLAB version is configured for current node, throw error.
         if (matlabExecutablePath == null || !matlabExecutablePath.exists()) {
-            throw new MatlabNotFoundError(String.format(Message.getValue("matlab.not.found.error.for.node"), instName, Objects
-                    .requireNonNull(node).getDisplayName()));
+            throw new MatlabNotFoundError(
+                    String.format(Message.getValue("matlab.not.found.error.for.node"), instName, Objects
+                            .requireNonNull(node).getDisplayName()));
         }
-        return matlabExecutablePath.getRemote();
+        return matlabExecutablePath;
     }
 }
