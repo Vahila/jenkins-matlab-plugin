@@ -7,6 +7,9 @@ For newer versions of the plugin, see [GitHub releases.](https://github.com/jenk
 
 ### 1.0.3
 
+
+
+
 Release date: _Nov 05, 2019_
 
 * Bug Fix : Scratch file copy is restricted to "Automatic" option.
